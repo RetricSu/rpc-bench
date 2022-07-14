@@ -1,0 +1,7 @@
+{
+  "url": {
+    "devnet": "http://localhost:8024",
+    "alphanet": "",
+    "testnet": ""
+  }
+}

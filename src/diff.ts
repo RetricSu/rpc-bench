@@ -25,7 +25,7 @@ export const loadLastResult = async () => {
     const data: Benches = JSON.parse(d);
     return data;
   }
-  console.log("file path not exits, return empty..");
+  console.log("last test log file not exits, return empty..");
   return {};
 };
 

@@ -13,6 +13,9 @@ jobs:
   test-on-devnet-v1:
     env:
       FINALITY_BLOCKS_NUM: 3
+      MANUAL_BUILD_WEB3: true
+      WEB3_GIT_URL: https://github.com/nervosnetwork/godwoken-web3.git
+      WEB3_GIT_CHECKOUT: simple-db-cache
 
     runs-on: ubuntu-latest
     steps:
@@ -93,11 +96,6 @@ jobs:
     - name: Start Godwoken-Kicker services
       timeout-minutes: 45
       working-directory: kicker
-      env:
-        MANUAL_BUILD_WEB3: true
-        WEB3_GIT_URL: https://github.com/nervosnetwork/godwoken-web3.git
-        WEB3_GIT_CHECKOUT: simple-db-cache
-       
       run: |
         # Temporary workaround unreliable web3 health check
         (echo " == kicker start attempt: 1 == " && ./kicker start) || \

@@ -1,4 +1,4 @@
-import fs from "fs/promises";
+import fs from "fs";
 import path from "path";
 
 export interface Benches {
@@ -17,20 +17,20 @@ export interface BenchDiff {
   };
 }
 
-const lastFile = path.resolve(__dirname, "../cache/last");
+const lastFile = path.resolve(__dirname, "../cache/last.log");
 
 export const loadLastResult = async () => {
-  try {
-    const d = await fs.readFile(lastFile, { encoding: "utf8" });
+  if (fs.existsSync(lastFile)) {
+    const d = await fs.readFileSync(lastFile, { encoding: "utf8" });
     const data: Benches = JSON.parse(d);
     return data;
-  } catch (error) {
-    return {};
   }
+  console.log("file path not exits, return empty..");
+  return {};
 };
 
 export const writeLastResult = async (data: Benches) => {
-  await fs.writeFile(lastFile, JSON.stringify(data), { encoding: "utf8" });
+  await fs.writeFileSync(lastFile, JSON.stringify(data), { encoding: "utf8" });
 };
 
 export const diff = async (current: Benches) => {

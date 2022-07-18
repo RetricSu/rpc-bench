@@ -16,7 +16,6 @@ jobs:
       MANUAL_BUILD_WEB3: true
       WEB3_GIT_URL: https://github.com/nervosnetwork/godwoken-web3.git
       WEB3_GIT_CHECKOUT: simple-db-cache
-      LOG_LEVEL: error
 
     runs-on: ubuntu-latest
     steps:
@@ -97,6 +96,8 @@ jobs:
     - name: Start Godwoken-Kicker services
       timeout-minutes: 45
       working-directory: kicker
+      env: 
+        LOG_LEVEL: error
       run: |
         # Temporary workaround unreliable web3 health check
         (echo " == kicker start attempt: 1 == " && ./kicker start) || \

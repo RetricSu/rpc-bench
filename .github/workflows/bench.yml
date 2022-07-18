@@ -13,8 +13,10 @@ jobs:
   test-on-devnet-v1:
     env:
       FINALITY_BLOCKS_NUM: 3
+
     runs-on: ubuntu-latest
     steps:
+
     - name: Update GITHUB_ENV if inputs.extra_github_env set
       if: "${{ inputs.extra_github_env != '' }}"
       run: |
@@ -36,6 +38,7 @@ jobs:
           sed -i "s|image:.*godwoken-prebuilds.*|image: $GODWOKEN_PREBUILD_IMAGE_NAME |g" docker-compose.yml
           cat docker-compose.yml
         fi
+    
     - name: Rust Cache
       uses: actions/cache@v2
       with:
@@ -88,8 +91,6 @@ jobs:
     - name: Start Godwoken-Kicker services
       timeout-minutes: 45
       working-directory: kicker
-      env: 
-        START_GODWOKEN_V0: true
       run: |
         # Temporary workaround unreliable web3 health check
         (echo " == kicker start attempt: 1 == " && ./kicker start) || \
@@ -98,23 +99,6 @@ jobs:
         docker-compose --file docker/docker-compose.yml logs --tail 6
       # FIXME: Sometimes, Godwoken service is not running
       # https://github.com/Flouse/godwoken/runs/3639382192?check_suite_focus=true#step:8:667
-
-    # - name: Enable offchain validator of Godwoken
-    #   working-directory: kicker
-    #   if: ${{ false }}
-    #   run: |
-    #     sudo chown -R `whoami` workspace/config.toml
-    #     grep -q "\[offchain_validator\]" workspace/config.toml \
-    #     || cat >> workspace/config.toml << __EOF__
-    #     [offchain_validator]
-    #     verify_withdrawal_signature = true
-    #     verify_tx_signature = true
-    #     verify_tx_execution = true
-    #     verify_max_cycles = 140000000
-    #     dump_tx_on_failure = true
-    #     __EOF__
-    #     docker restart docker_godwoken_1
-    #     docker-compose --file docker/docker-compose.yml logs --tail 6
 
     - name: Deposit for 2 dev accounts
       working-directory: kicker
@@ -143,17 +127,6 @@ jobs:
     #     key: ${{ runner.os }}-node_modules-${{ hashFiles('/home/runner/work/**/package-lock.json', '/home/runner/work/**/yarn.lock') }}
     #     restore-keys: |
     #       ${{ runner.os }}-node_modules-
-
-    - name: Generate devnet envfile from godwoken-config.toml
-      working-directory: tools
-      run: |
-        yarn install && yarn build-all
-    - name: Wait 1 layer2 blocks passed
-      uses: actions/github-script@v5
-      with:
-        script: |
-          const { waitXl2BlocksPassed } = require("./scripts/helper");
-          await waitXl2BlocksPassed(1);
     
     - name: Run rpc bench test with devnet
       run: yarn && yarn start

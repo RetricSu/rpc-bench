@@ -1,12 +1,36 @@
+# copy and modify from https://github.com/nervosnetwork/godwoken-tests/blob/develop/.github/workflows/reusable-integration-test-v1.yml
+
 name: Rpc Compress Bench Test v1
 
 on:
-  push:
-    branches:
-    - 'master'
-  pull_request:
-    branches:
-    - 'master'
+  workflow_call:
+    inputs:
+      # If `extra_github_env` is set, it will be put into GITHUB_ENV at the beginning of each job
+      #
+      # ```
+      # - name: Update GITHUB_ENV if inputs.extra_github_env set
+      #   if: "${{ inputs.extra_github_env != '' }}"
+      #   run: echo ${{ inputs.extra_github_env }} >> $GITHUB_ENV
+      # ```
+      #
+      # ## Examples
+      #
+      # * Specify the kicker version
+      #
+      #   ```yaml
+      #   extra_github_env: |
+      #     GODWOKEN_TESTS_REPO=keroro520/godwoken-tests # default is nervosnetwork/godwoken-tests
+      #     GODWOKEN_TESTS_REF=helloworld # default is develop
+      #     GODWOKEN_KICKER_REPO=keroro520/godwoken-kicker # default is RetricSu/godwoken-kicker
+      #     GODWOKEN_KICKER_REF=helloworld # default is compatibility-changes
+      #
+      #     GODWOKEN_PREBUILD_IMAGE_NAME=ghcr.io/keroro520/godwoken-prebuilds:v1-godwoken-d3eb41a-202205310512 # default is ""
+      #   ```
+      #
+      extra_github_env:
+        type: string
+        description: 'Append write into GITHUB_ENV at the begining of every job'
+        required: false
 
 jobs:
   # Run rpc-compress-bench-tests on devnet_v1 deployed by Godwoken-Kicker

@@ -19,12 +19,6 @@ jobs:
       if: "${{ inputs.extra_github_env != '' }}"
       run: |
         echo "${{ inputs.extra_github_env }}" >> $GITHUB_ENV
-    - name: Checkout godwoken-tests
-      uses: actions/checkout@v3
-      with:
-        repository: ${{ env.GODWOKEN_TESTS_REPO || 'nervosnetwork/godwoken-tests' }}
-        ref: ${{ env.GODWOKEN_TESTS_REF || 'develop' }}
-        submodules: 'recursive'
 
     - name: Checkout godwoken-kicker
       uses: actions/checkout@v3

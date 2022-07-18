@@ -2,7 +2,7 @@ export const Requests = [
   // consume db
   { method: "eth_blockNumber", params: [] },
   // consume db
-  { method: "eth_getBlockByNumber", params: ["0xd4", true] },
+  { method: "eth_getBlockByNumber", params: ["0x4", true] },
   // consume db
   {
     method: "eth_getTransactionReceipt",

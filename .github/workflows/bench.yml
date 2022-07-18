@@ -21,6 +21,8 @@ jobs:
       if: "${{ inputs.extra_github_env != '' }}"
       run: |
         echo "${{ inputs.extra_github_env }}" >> $GITHUB_ENV
+      
+    - uses: actions/checkout@v3
 
     - name: Checkout godwoken-kicker
       uses: actions/checkout@v3
